@@ -200,11 +200,11 @@ let layerId = 0;
   selector: 'agm-data-layer'
 })
 export class AgmDataLayer implements OnInit, OnDestroy, OnChanges {
-  private static _dataOptionsAttributes: Array<string> = ['style'];
+  protected static _dataOptionsAttributes: Array<string> = ['style'];
 
-  private _addedToManager: boolean = false;
-  private _id: string = (layerId++).toString();
-  private _subscriptions: Subscription[] = [];
+  protected _addedToManager: boolean = false;
+  protected _id: string = (layerId++).toString();
+  protected _subscriptions: Subscription[] = [];
 
   /**
    * This event is fired when a feature in the layer is clicked.
@@ -221,7 +221,7 @@ export class AgmDataLayer implements OnInit, OnDestroy, OnChanges {
    */
   @Input() style: () => void;
 
-  constructor(private _manager: DataLayerManager) { }
+  constructor(protected _manager: DataLayerManager) { }
 
   ngOnInit() {
     if (this._addedToManager) {
@@ -232,7 +232,7 @@ export class AgmDataLayer implements OnInit, OnDestroy, OnChanges {
     this._addEventListeners();
   }
 
-  private _addEventListeners() {
+  protected _addEventListeners() {
     const listeners = [
       { name: 'click', handler: (ev: DataMouseEvent) => this.layerClick.emit(ev) },
     ];

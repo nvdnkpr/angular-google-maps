@@ -10,12 +10,11 @@ import {MarkerManager} from './marker-manager';
 
 @Injectable()
 export class InfoWindowManager {
-  private _infoWindows: Map<AgmInfoWindow, Promise<InfoWindow>> =
-      new Map<AgmInfoWindow, Promise<InfoWindow>>();
+  protected _infoWindows: Map<AgmInfoWindow, Promise<InfoWindow>> = new Map<AgmInfoWindow, Promise<InfoWindow>>();
 
   constructor(
-      private _mapsWrapper: GoogleMapsAPIWrapper, private _zone: NgZone,
-      private _markerManager: MarkerManager) {}
+      protected _mapsWrapper: GoogleMapsAPIWrapper, protected _zone: NgZone,
+      protected _markerManager: MarkerManager) {}
 
   deleteInfoWindow(infoWindow: AgmInfoWindow): Promise<void> {
     const iWindow = this._infoWindows.get(infoWindow);

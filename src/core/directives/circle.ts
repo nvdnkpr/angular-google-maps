@@ -148,16 +148,16 @@ export class AgmCircle implements OnInit, OnChanges, OnDestroy {
    */
   @Output() rightClick: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
-  private _circleAddedToManager: boolean = false;
+  protected _circleAddedToManager: boolean = false;
 
-  private static _mapOptions: string[] = [
+  protected static _mapOptions: string[] = [
     'fillColor', 'fillOpacity', 'strokeColor', 'strokeOpacity', 'strokePosition', 'strokeWeight',
     'visible', 'zIndex'
   ];
 
-  private _eventSubscriptions: Subscription[] = [];
+  protected _eventSubscriptions: Subscription[] = [];
 
-  constructor(private _manager: CircleManager) {}
+  constructor(protected _manager: CircleManager) {}
 
   /** @internal */
   ngOnInit() {
@@ -189,7 +189,7 @@ export class AgmCircle implements OnInit, OnChanges, OnDestroy {
     this._updateCircleOptionsChanges(changes);
   }
 
-  private _updateCircleOptionsChanges(changes: {[propName: string]: SimpleChange}) {
+  protected _updateCircleOptionsChanges(changes: {[propName: string]: SimpleChange}) {
     let options: {[propName: string]: any} = {};
     let optionKeys =
         Object.keys(changes).filter(k => AgmCircle._mapOptions.indexOf(k) !== -1);
@@ -199,7 +199,7 @@ export class AgmCircle implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private _registerEventListeners() {
+  protected _registerEventListeners() {
     let events: Map<string, EventEmitter<any>> = new Map<string, EventEmitter<any>>();
     events.set('center_changed', this.centerChange);
     events.set('click', this.circleClick);

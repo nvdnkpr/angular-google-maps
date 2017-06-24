@@ -10,10 +10,10 @@ let layerId = 0;
   selector: 'agm-kml-layer'
 })
 export class AgmKmlLayer implements OnInit, OnDestroy, OnChanges {
-  private _addedToManager: boolean = false;
-  private _id: string = (layerId++).toString();
-  private _subscriptions: Subscription[] = [];
-  private static _kmlLayerOptions: string[] =
+  protected _addedToManager: boolean = false;
+  protected _id: string = (layerId++).toString();
+  protected _subscriptions: Subscription[] = [];
+  protected static _kmlLayerOptions: string[] =
       ['clickable', 'preserveViewport', 'screenOverlays', 'suppressInfoWindows', 'url', 'zIndex'];
 
   /**
@@ -66,7 +66,7 @@ export class AgmKmlLayer implements OnInit, OnDestroy, OnChanges {
    */
   @Output() statusChange: EventEmitter<void> = new EventEmitter<void>();
 
-  constructor(private _manager: KmlLayerManager) {}
+  constructor(protected _manager: KmlLayerManager) {}
 
   ngOnInit() {
     if (this._addedToManager) {
@@ -84,7 +84,7 @@ export class AgmKmlLayer implements OnInit, OnDestroy, OnChanges {
     this._updatePolygonOptions(changes);
   }
 
-  private _updatePolygonOptions(changes: SimpleChanges) {
+  protected _updatePolygonOptions(changes: SimpleChanges) {
     const options = Object.keys(changes)
                         .filter(k => AgmKmlLayer._kmlLayerOptions.indexOf(k) !== -1)
                         .reduce((obj: any, k: string) => {
@@ -96,7 +96,7 @@ export class AgmKmlLayer implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  private _addEventListeners() {
+  protected _addEventListeners() {
     const listeners = [
       {name: 'click', handler: (ev: KmlMouseEvent) => this.layerClick.emit(ev)},
       {name: 'defaultviewport_changed', handler: () => this.defaultViewportChange.emit()},

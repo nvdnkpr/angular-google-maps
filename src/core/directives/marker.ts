@@ -117,19 +117,19 @@ export class AgmMarker implements OnDestroy, OnChanges, AfterContentInit {
    */
   @ContentChildren(AgmInfoWindow) infoWindow: QueryList<AgmInfoWindow> = new QueryList<AgmInfoWindow>();
 
-  private _markerAddedToManger: boolean = false;
-  private _id: string;
-  private _observableSubscriptions: Subscription[] = [];
+  protected _markerAddedToManger: boolean = false;
+  protected _id: string;
+  protected _observableSubscriptions: Subscription[] = [];
 
-  constructor(private _markerManager: MarkerManager) { this._id = (markerId++).toString(); }
+  constructor(protected _markerManager: MarkerManager) { this._id = (markerId++).toString(); }
 
   /* @internal */
   ngAfterContentInit() {
-    this.handleInfoWindowUpdate();
-    this.infoWindow.changes.subscribe(() => this.handleInfoWindowUpdate());
+    this._handleInfoWindowUpdate();
+    this.infoWindow.changes.subscribe(() => this._handleInfoWindowUpdate());
   }
 
-  private handleInfoWindowUpdate() {
+  protected _handleInfoWindowUpdate() {
     if (this.infoWindow.length > 1) {
       throw new Error('Expected no more than one info window.');
     }
@@ -175,7 +175,7 @@ export class AgmMarker implements OnDestroy, OnChanges, AfterContentInit {
     }
   }
 
-  private _addEventListeners() {
+  protected _addEventListeners() {
     const cs = this._markerManager.createEventObservable('click', this).subscribe(() => {
       if (this.openInfoWindow) {
         this.infoWindow.forEach(infoWindow => infoWindow.open());

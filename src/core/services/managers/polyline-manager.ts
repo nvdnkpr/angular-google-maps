@@ -9,12 +9,12 @@ import {LatLngLiteral, Polyline} from '../google-maps-types';
 
 @Injectable()
 export class PolylineManager {
-  private _polylines: Map<AgmPolyline, Promise<Polyline>> =
+  protected _polylines: Map<AgmPolyline, Promise<Polyline>> =
       new Map<AgmPolyline, Promise<Polyline>>();
 
-  constructor(private _mapsWrapper: GoogleMapsAPIWrapper, private _zone: NgZone) {}
+  constructor(protected _mapsWrapper: GoogleMapsAPIWrapper, protected _zone: NgZone) {}
 
-  private static _convertPoints(line: AgmPolyline): Array<LatLngLiteral> {
+  protected static _convertPoints(line: AgmPolyline): Array<LatLngLiteral> {
     const path = line._getPoints().map((point: AgmPolylinePoint) => {
       return <LatLngLiteral>{lat: point.latitude, lng: point.longitude};
     });

@@ -9,10 +9,10 @@ import * as mapTypes from '../google-maps-types';
 
 @Injectable()
 export class CircleManager {
-  private _circles: Map<AgmCircle, Promise<mapTypes.Circle>> =
+  protected _circles: Map<AgmCircle, Promise<mapTypes.Circle>> =
       new Map<AgmCircle, Promise<mapTypes.Circle>>();
 
-  constructor(private _apiWrapper: GoogleMapsAPIWrapper, private _zone: NgZone) {}
+  constructor(protected _apiWrapper: GoogleMapsAPIWrapper, protected _zone: NgZone) {}
 
   addCircle(circle: AgmCircle) {
     this._circles.set(circle, this._apiWrapper.createCircle({

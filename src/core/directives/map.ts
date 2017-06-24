@@ -255,7 +255,7 @@ export class AgmMap implements OnChanges, OnInit, OnDestroy {
   /**
    * Map option attributes that can change over time
    */
-  private static _mapOptionsAttributes: string[] = [
+  protected static _mapOptionsAttributes: string[] = [
     'disableDoubleClickZoom', 'scrollwheel', 'draggable', 'draggableCursor', 'draggingCursor',
     'keyboardShortcuts', 'zoomControl', 'zoomControlOptions', 'styles', 'streetViewControl',
     'streetViewControlOptions', 'zoom', 'mapTypeControl', 'mapTypeControlOptions', 'minZoom',
@@ -264,7 +264,7 @@ export class AgmMap implements OnChanges, OnInit, OnDestroy {
     'mapTypeId', 'clickableIcons', 'gestureHandling'
   ];
 
-  private _observableSubscriptions: Subscription[] = [];
+  protected _observableSubscriptions: Subscription[] = [];
 
   /**
    * This event emitter gets emitted when the user clicks on the map (but not when they click on a
@@ -310,7 +310,7 @@ export class AgmMap implements OnChanges, OnInit, OnDestroy {
    */
   @Output() mapReady: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private _elem: ElementRef, private _mapsWrapper: GoogleMapsAPIWrapper) {}
+  constructor(protected _elem: ElementRef, protected _mapsWrapper: GoogleMapsAPIWrapper) {}
 
   /** @internal */
   ngOnInit() {
@@ -319,7 +319,7 @@ export class AgmMap implements OnChanges, OnInit, OnDestroy {
     this._initMapInstance(container);
   }
 
-  private _initMapInstance(el: HTMLElement) {
+  protected _initMapInstance(el: HTMLElement) {
     this._mapsWrapper.createMap(el, {
       center: {lat: this.latitude || 0, lng: this.longitude || 0},
       zoom: this.zoom,
@@ -375,7 +375,7 @@ export class AgmMap implements OnChanges, OnInit, OnDestroy {
     this._updatePosition(changes);
   }
 
-  private _updateMapOptionsChanges(changes: SimpleChanges) {
+  protected _updateMapOptionsChanges(changes: SimpleChanges) {
     let options: {[propName: string]: any} = {};
     let optionKeys =
         Object.keys(changes).filter(k => AgmMap._mapOptionsAttributes.indexOf(k) !== -1);
@@ -404,7 +404,7 @@ export class AgmMap implements OnChanges, OnInit, OnDestroy {
     });
   }
 
-  private _updatePosition(changes: SimpleChanges) {
+  protected _updatePosition(changes: SimpleChanges) {
     if (changes['latitude'] == null && changes['longitude'] == null &&
         changes['fitBounds'] == null) {
       // no position update needed
@@ -423,7 +423,7 @@ export class AgmMap implements OnChanges, OnInit, OnDestroy {
     this._setCenter();
   }
 
-  private _setCenter() {
+  protected _setCenter() {
     let newCenter = {
       lat: this.latitude,
       lng: this.longitude,
@@ -435,7 +435,7 @@ export class AgmMap implements OnChanges, OnInit, OnDestroy {
     }
   }
 
-  private _fitBounds() {
+  protected _fitBounds() {
     if (this.usePanning) {
       this._mapsWrapper.panToBounds(this.fitBounds);
       return;
@@ -443,7 +443,7 @@ export class AgmMap implements OnChanges, OnInit, OnDestroy {
     this._mapsWrapper.fitBounds(this.fitBounds);
   }
 
-  private _handleMapCenterChange() {
+  protected _handleMapCenterChange() {
     const s = this._mapsWrapper.subscribeToMapEvent<void>('center_changed').subscribe(() => {
       this._mapsWrapper.getCenter().then((center: LatLng) => {
         this.latitude = center.lat();
@@ -454,7 +454,7 @@ export class AgmMap implements OnChanges, OnInit, OnDestroy {
     this._observableSubscriptions.push(s);
   }
 
-  private _handleBoundsChange() {
+  protected _handleBoundsChange() {
     const s = this._mapsWrapper.subscribeToMapEvent<void>('bounds_changed').subscribe(() => {
       this._mapsWrapper.getBounds().then(
           (bounds: LatLngBounds) => { this.boundsChange.emit(bounds); });
@@ -462,7 +462,7 @@ export class AgmMap implements OnChanges, OnInit, OnDestroy {
     this._observableSubscriptions.push(s);
   }
 
-  private _handleMapZoomChange() {
+  protected _handleMapZoomChange() {
     const s = this._mapsWrapper.subscribeToMapEvent<void>('zoom_changed').subscribe(() => {
       this._mapsWrapper.getZoom().then((z: number) => {
         this.zoom = z;
@@ -472,13 +472,13 @@ export class AgmMap implements OnChanges, OnInit, OnDestroy {
     this._observableSubscriptions.push(s);
   }
 
-  private _handleIdleEvent() {
+  protected _handleIdleEvent() {
     const s = this._mapsWrapper.subscribeToMapEvent<void>('idle').subscribe(
         () => { this.idle.emit(void 0); });
     this._observableSubscriptions.push(s);
   }
 
-  private _handleMapMouseEvents() {
+  protected _handleMapMouseEvents() {
     interface Emitter {
       emit(value: any): void;
     }

@@ -189,17 +189,17 @@ export class AgmPolygon implements OnDestroy, OnChanges, AfterContentInit {
    */
   @Output() polyRightClick: EventEmitter<PolyMouseEvent> = new EventEmitter<PolyMouseEvent>();
 
-  private static _polygonOptionsAttributes: Array<string> = [
+  protected static _polygonOptionsAttributes: Array<string> = [
     'clickable', 'draggable', 'editable', 'fillColor', 'fillOpacity', 'geodesic', 'icon', 'map',
     'paths', 'strokeColor', 'strokeOpacity', 'strokeWeight', 'visible', 'zIndex', 'draggable',
     'editable', 'visible'
   ];
 
-  private _id: string;
-  private _polygonAddedToManager: boolean = false;
-  private _subscriptions: Subscription[] = [];
+  protected _id: string;
+  protected _polygonAddedToManager: boolean = false;
+  protected _subscriptions: Subscription[] = [];
 
-  constructor(private _polygonManager: PolygonManager) {}
+  constructor(protected _polygonManager: PolygonManager) {}
 
   /** @internal */
   ngAfterContentInit() {
@@ -217,13 +217,13 @@ export class AgmPolygon implements OnDestroy, OnChanges, AfterContentInit {
     this._polygonManager.setPolygonOptions(this, this._updatePolygonOptions(changes));
   }
 
-  private _init() {
+  protected _init() {
     this._polygonManager.addPolygon(this);
     this._polygonAddedToManager = true;
     this._addEventListeners();
   }
 
-  private _addEventListeners() {
+  protected _addEventListeners() {
     const handlers = [
       {name: 'click', handler: (ev: PolyMouseEvent) => this.polyClick.emit(ev)},
       {name: 'dbclick', handler: (ev: PolyMouseEvent) => this.polyDblClick.emit(ev)},
@@ -243,7 +243,7 @@ export class AgmPolygon implements OnDestroy, OnChanges, AfterContentInit {
     });
   }
 
-  private _updatePolygonOptions(changes: SimpleChanges): PolygonOptions {
+  protected _updatePolygonOptions(changes: SimpleChanges): PolygonOptions {
     return Object.keys(changes)
         .filter(k => AgmPolygon._polygonOptionsAttributes.indexOf(k) !== -1)
         .reduce((obj: any, k: string) => {

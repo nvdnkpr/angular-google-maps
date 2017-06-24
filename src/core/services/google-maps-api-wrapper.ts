@@ -16,10 +16,10 @@ declare var google: any;
  */
 @Injectable()
 export class GoogleMapsAPIWrapper {
-  private _map: Promise<mapTypes.GoogleMap>;
-  private _mapResolver: (value?: mapTypes.GoogleMap) => void;
+  protected _map: Promise<mapTypes.GoogleMap>;
+  protected _mapResolver: (value?: mapTypes.GoogleMap) => void;
 
-  constructor(private _loader: MapsAPILoader, private _zone: NgZone) {
+  constructor(protected _loader: MapsAPILoader, protected _zone: NgZone) {
     this._map =
         new Promise<mapTypes.GoogleMap>((resolve: () => void) => { this._mapResolver = resolve; });
   }

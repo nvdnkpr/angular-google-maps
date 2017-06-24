@@ -8,10 +8,9 @@ import {Polygon} from '../google-maps-types';
 
 @Injectable()
 export class PolygonManager {
-  private _polygons: Map<AgmPolygon, Promise<Polygon>> =
-      new Map<AgmPolygon, Promise<Polygon>>();
+  protected _polygons: Map<AgmPolygon, Promise<Polygon>> = new Map<AgmPolygon, Promise<Polygon>>();
 
-  constructor(private _mapsWrapper: GoogleMapsAPIWrapper, private _zone: NgZone) {}
+  constructor(protected _mapsWrapper: GoogleMapsAPIWrapper, protected _zone: NgZone) {}
 
   addPolygon(path: AgmPolygon) {
     const polygonPromise = this._mapsWrapper.createPolygon({

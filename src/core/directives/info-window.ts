@@ -93,11 +93,11 @@ export class AgmInfoWindow implements OnDestroy, OnChanges, OnInit {
    */
   @Output() infoWindowClose: EventEmitter<void> = new EventEmitter<void>();
 
-  private static _infoWindowOptionsInputs: string[] = ['disableAutoPan', 'maxWidth'];
-  private _infoWindowAddedToManager: boolean = false;
-  private _id: string = (infoWindowId++).toString();
+  protected static _infoWindowOptionsInputs: string[] = ['disableAutoPan', 'maxWidth'];
+  protected _infoWindowAddedToManager: boolean = false;
+  protected _id: string = (infoWindowId++).toString();
 
-  constructor(private _infoWindowManager: InfoWindowManager, private _el: ElementRef) {}
+  constructor(protected _infoWindowManager: InfoWindowManager, protected _el: ElementRef) {}
 
   ngOnInit() {
     this.content = this._el.nativeElement.querySelector('.agm-info-window-content');
@@ -125,18 +125,18 @@ export class AgmInfoWindow implements OnDestroy, OnChanges, OnInit {
     this._setInfoWindowOptions(changes);
   }
 
-  private _registerEventListeners() {
+  protected _registerEventListeners() {
     this._infoWindowManager.createEventObservable('closeclick', this).subscribe(() => {
       this.isOpen = false;
       this.infoWindowClose.emit();
     });
   }
 
-  private _updateOpenState() {
+  protected _updateOpenState() {
     this.isOpen ? this.open() : this.close();
   }
 
-  private _setInfoWindowOptions(changes: {[key: string]: SimpleChange}) {
+  protected _setInfoWindowOptions(changes: {[key: string]: SimpleChange}) {
     let options: {[propName: string]: any} = {};
     let optionKeys = Object.keys(changes).filter(
         k => AgmInfoWindow._infoWindowOptionsInputs.indexOf(k) !== -1);

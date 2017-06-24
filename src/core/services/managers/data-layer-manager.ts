@@ -13,10 +13,9 @@ declare var google: any;
  */
 @Injectable()
 export class DataLayerManager {
-  private _layers: Map<AgmDataLayer, Promise<Data>> =
-  new Map<AgmDataLayer, Promise<Data>>();
+  protected _layers: Map<AgmDataLayer, Promise<Data>> = new Map<AgmDataLayer, Promise<Data>>();
 
-  constructor(private _wrapper: GoogleMapsAPIWrapper, private _zone: NgZone) { }
+  constructor(protected _wrapper: GoogleMapsAPIWrapper, protected _zone: NgZone) { }
 
   /**
    * Adds a new Data Layer to the map.

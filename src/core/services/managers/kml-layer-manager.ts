@@ -13,10 +13,10 @@ declare var google: any;
  */
 @Injectable()
 export class KmlLayerManager {
-  private _layers: Map<AgmKmlLayer, Promise<KmlLayer>> =
+  protected _layers: Map<AgmKmlLayer, Promise<KmlLayer>> =
       new Map<AgmKmlLayer, Promise<KmlLayer>>();
 
-  constructor(private _wrapper: GoogleMapsAPIWrapper, private _zone: NgZone) {}
+  constructor(protected _wrapper: GoogleMapsAPIWrapper, protected _zone: NgZone) {}
 
   /**
    * Adds a new KML Layer to the map.

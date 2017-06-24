@@ -148,16 +148,16 @@ export class AgmPolyline implements OnDestroy, OnChanges, AfterContentInit {
    */
   @ContentChildren(AgmPolylinePoint) points: QueryList<AgmPolylinePoint>;
 
-  private static _polylineOptionsAttributes: Array<string> = [
+  protected static _polylineOptionsAttributes: Array<string> = [
     'draggable', 'editable', 'visible', 'geodesic', 'strokeColor', 'strokeOpacity', 'strokeWeight',
     'zIndex'
   ];
 
-  private _id: string;
-  private _polylineAddedToManager: boolean = false;
-  private _subscriptions: Subscription[] = [];
+  protected _id: string;
+  protected _polylineAddedToManager: boolean = false;
+  protected _subscriptions: Subscription[] = [];
 
-  constructor(private _polylineManager: PolylineManager) { this._id = (polylineId++).toString(); }
+  constructor(protected _polylineManager: PolylineManager) { this._id = (polylineId++).toString(); }
 
   /** @internal */
   ngAfterContentInit() {
@@ -189,13 +189,13 @@ export class AgmPolyline implements OnDestroy, OnChanges, AfterContentInit {
     this._polylineManager.setPolylineOptions(this, options);
   }
 
-  private _init() {
+  protected _init() {
     this._polylineManager.addPolyline(this);
     this._polylineAddedToManager = true;
     this._addEventListeners();
   }
 
-  private _addEventListeners() {
+  protected _addEventListeners() {
     const handlers = [
       {name: 'click', handler: (ev: PolyMouseEvent) => this.lineClick.emit(ev)},
       {name: 'dbclick', handler: (ev: PolyMouseEvent) => this.lineDblClick.emit(ev)},
